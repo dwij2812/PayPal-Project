@@ -27,16 +27,23 @@ def score(user=[],categories=[]):
     disputes = 0
     score = 0
     counted = []
+    y = [0 for i in range(len(user))]
+    x=range(len(user))
+    k=0    #Count Variable for the loops
     for i in user:
         if i in categories:
             n=rel[0].index(i)
             rel[1][n]+=1
             disputes+=1
+            y[int(k)]=int(0)
+            k+=1
             if i not in counted:
                 counted.append(i)
                 score+=1
         else:
+            y[int(k)]=int(1)
             good+=1
+            k+=1
     print("The User Transaction Data is: ")
     print(user)
     print("The User Disputes Cummulated into categories are:")
@@ -67,6 +74,13 @@ def score(user=[],categories=[]):
         print("Needed More Transactions to generate the score");
 
 
+	#Interpolation Method for prediction of the Next Data Item
+    print(y)
+    z=np.polynomial.polynomial.polyfit(x,y,2)
+    print(z)
+    ffit=np.poly1d(z)
+    print(ffit)
+    print(ffit(len(user)))
 
     labels = ['Good', 'Disputes']
     sizes = [good,disputes]
