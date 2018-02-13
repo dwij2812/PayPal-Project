@@ -35,7 +35,7 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
     print("The User Categories Cummulated into categories are")
     print(rel)
     m=rel[1].index(max(rel[1]))
-    print("The Use is an buyer related to the field of:")
+    print("The User is an buyer related to the field of:")
     print(rel[0][m])
     print("Considering all the Categories the top categories are:")
     if(score>3):

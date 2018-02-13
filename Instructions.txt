@@ -1,0 +1,3 @@
+For finding the consistency of the thing use coefficient of variance using numpy
+
+for Calculating User Score 
