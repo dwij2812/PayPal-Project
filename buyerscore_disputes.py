@@ -9,8 +9,9 @@ dispute_categories=["INR","SNAD","UT"]
 
 a=["INR","GOOD","GOOD","SNAD","UT","SNAD"]
 b=["GOOD","GOOD","GOOD","GOOD","GOOD"]
-c=["GOOD","GOOD"]
+c=["GOOD","GOOD","HOLD"]
 d=["BAD","BAD","GOOD","GOOD","GOOD"]
+e=["GOOD","GOOD","INR","SNAD","GOOD","GOOD","BAD","GOOD","HOLD"]
 ###############################################################
 def cummulated_disputes(categories=[]):
     k = 0
@@ -126,3 +127,4 @@ print("A: ",score(a,dispute_categories))
 print("B: ",score(b,dispute_categories))
 print("C: ",score(c,dispute_categories))
 print("D: ",score(d,dispute_categories))
+print("E: ",score(e,dispute_categories))
