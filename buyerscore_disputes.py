@@ -10,6 +10,7 @@ dispute_categories=["INR","SNAD","UT"]
 a=["INR","GOOD","GOOD","SNAD","UT","SNAD"]
 b=["GOOD","GOOD","GOOD","GOOD","GOOD"]
 c=["GOOD","GOOD"]
+d=["BAD","BAD","GOOD","GOOD","GOOD"]
 ###############################################################
 def cummulated_disputes(categories=[]):
     k = 0
@@ -26,6 +27,8 @@ def score(user=[],categories=[]):
     good = 0
     disputes = 0
     score = 0
+    hold = 0
+    bad = 0
     counted = []
     y = [0 for i in range(len(user))]
     x=range(len(user))
@@ -41,9 +44,18 @@ def score(user=[],categories=[]):
                 counted.append(i)
                 score+=1
         else:
-            y[int(k)]=int(1)
-            good+=1
-            k+=1
+            if i == 'HOLD':
+                y[int(k)]=2
+                hold+=1
+                k+=1
+            elif i == 'BAD':
+                y[int(k)]=3
+                bad+=1
+                k+=1
+            else:
+                y[int(k)]=int(1)
+                good+=1
+                k+=1
     print("The User Transaction Data is: ")
     print(user)
     print("The User Disputes Cummulated into categories are:")
@@ -52,6 +64,10 @@ def score(user=[],categories=[]):
     print(good)
     print("\nThe Number Of Disputed Transactions are:")
     print(disputes)
+    print("\nThe Number of Transactions put on hold is:")
+    print(hold)
+    print("\nThe number of bad Transactions are:")
+    print(bad)
     m=rel[1].index(max(rel[1]))
     print("The User is facing most of the problems as:")
     print(rel[0][m])
@@ -76,16 +92,18 @@ def score(user=[],categories=[]):
 
 	#Interpolation Method for prediction of the Next Data Item
     print(y)
-    z=np.polynomial.polynomial.polyfit(x,y,2)
+    z=np.polynomial.polynomial.polyfit(x,y,3)
     print(z)
     ffit=np.poly1d(z)
     print(ffit)
     print(ffit(len(user)))
 
-    labels = ['Good', 'Disputes']
-    sizes = [good,disputes]
-    colors = ['#003087', '#009cde']
-    explode = (0.1, 0.1)
+
+
+    labels = ['Good', 'Disputes','Hold','False Claims']
+    sizes = [good,disputes,hold,bad]
+    colors = ['#003087', '#009cde','#F68900','#fe001a']
+    explode = (0.1, 0.1,0.1,0.1)
     # Plot
     plt.pie(sizes, explode=explode, labels=labels, colors=colors,autopct='%1.1f%%', shadow=True, startangle=140)
     plt.axis('equal')
@@ -107,3 +125,4 @@ def score(user=[],categories=[]):
 print("A: ",score(a,dispute_categories))
 print("B: ",score(b,dispute_categories))
 print("C: ",score(c,dispute_categories))
+print("D: ",score(d,dispute_categories))
