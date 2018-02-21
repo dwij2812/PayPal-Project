@@ -62,7 +62,15 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
             cat_score_list.append(cat_score)
             print(cat_score)
         print("For the User the Average Score Is:")
-        avg_score=np.mean(cat_score_list)
+        avg_score=0
+        d=0
+        var=0
+        for i in rel[1]:
+            if(i != 0):
+                avg_score+=cat_score_list[d]
+                var+=1
+            d+=1
+        avg_score=avg_score/var
         print(avg_score)
         print("For the Graph Follow the Legend")
         j=0
