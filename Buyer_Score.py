@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import easygui as easygui
 ############################################################################################
 categories=["Electronics","Daily Needs","Clothes","Tickets","Entertainment","Education","Automobile"]
 a=["Electronics","Tickets","Tickets"]
@@ -20,7 +21,7 @@ def reliability(categories=[]):
     return l
 ############################################################################################
 def score(user=[],categories=[]):       # To Describe the Spread Of Products Bought
-    print('\n\n///////////////////////////////////////////////////////////////////////////////\n')
+    print('\n\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n')
     rel=reliability(categories)
     counted=[]
     cat_score_list=[]
@@ -49,7 +50,7 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
         print(cat_spread)
         print("The number of categories user has shopped from is:")
         print (score)
-        print("====================================================")
+        print("==========================================================================================================================================")
         print("User Score (100) according to category is:")
         for i in rel[0]:
             z=rel[0].index(i)
@@ -88,6 +89,7 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
         plt.show()
     else:
         print("Meed more data before calculating the User Score")
+        easygui.msgbox("\nSince the available transactions for the user are less than three hence we cannot predict the Score\n",title="Insufficient Data")
         print("=============MINIMUM LIMIT CAP=============")
 ############################################################################################
 print("G: ",score(g,categories))
