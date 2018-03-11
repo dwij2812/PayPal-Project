@@ -57,11 +57,28 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
             purchases_field=rel[1][z]/rel[1][m]#len(user)
             print("For ",i," the score is: ")
             cat_score=cat_spread*50+purchases_field*50
-            if((cat_score>25) and (rel[1][z]==0)) :
-                print("Since the value might shoot up unnecessarily, we have capped it")
-                cat_score=25
+            ##General Capping for the upper limit of not purchased categories
+            ##if((cat_score>25) and (rel[1][z]==0)) :
+                ##print("Since the value might shoot up unnecessarily, we have capped it")
+                ##cat_score=25
             cat_score_list.append(cat_score)
             print(cat_score)
+        #################################################################################################
+        ##Dynamic Capping for the Upper Limit of the not purchased Categories
+        print("----------After Normalization of the data and introducing the Upper value Caps We Get----------")
+        flag=0
+        for i in rel[0]:
+            z=rel[0].index(i)
+            purchases_field=rel[1][z]/rel[1][m]#len(user)
+            print("For ",i," the score is: ")
+            cat_score=cat_spread*50+purchases_field*50
+            if((cat_score>max(cat_score_list)/4) and (rel[1][z]==0)) :
+                print("**********Since the value might shoot up unnecessarily, we have capped it**********")
+                cat_score=max(cat_score_list)/4
+            cat_score_list[flag]=cat_score
+            flag+=1
+            print(cat_score)
+        ############################################################################################
         print("For the User the Average Score Is:")
         avg_score=0
         d=0
