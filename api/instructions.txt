@@ -1,0 +1,14 @@
+Dependencies:
+
+Numpy 
+Requests
+jsonify
+
+Run the sender code which will be sending the list in Json Form(PORT 3000)
+
+Run the app.py code simultanleously:
+http://127.0.0.1:5000/buyerscore
+Request the above URL in order to get the thing done
+This will fetch the Json list being served on the port 3000 and then Process it and return the value in JSon format on the port 5000 Page
+
+We will have to pick the dataset value and place it in the sender file in order to bradcast it to the API and get the result back
