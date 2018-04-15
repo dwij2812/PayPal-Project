@@ -4,7 +4,7 @@ from bson import ObjectId
 from flask import Flask, request,jsonify #import main Flask class and request object
 #Step 1: Connect to MongoDB - Note: Change connection string as needed
 client = MongoClient(port=27017)
-db=client.test
+db = client['seller-trust-api']
 import requests as requests
 import json as json
 def get(url):
@@ -126,18 +126,21 @@ def score(user=[],categories=[]):       # To Describe the Spread Of Products Bou
 def addtodb(user,categories,user_id):
     k=score(user,categories)
     test = {
-            'electronics' : k[0],
-            'daily_needs' : k[1],
-            'clothes' : k[2],
-            'tickets' : k[3],
-            'entertainment' : k[4],
-            'education' : k[5],
-            'automobile' : k[6]
+            'category_score.electronics' : k[0],
+            'category_score.daily_needs' : k[1],
+            'category_score.clothes' : k[2],
+            'category_score.tickets' : k[3],
+            'category_score.entertainment' : k[4],
+            'category_score.education' : k[5],
+            'category_score.automobile' : k[6]
         }
-    param={
-            '_id':ObjectId(user_id)
-           } 
-    result=db.test.update_one(param,{"$set": test},upsert=False)
+    param={'email': user_id} 
+    user = db.users.find_one(param)
+    print("from line 139")
+    print(user)
+    for i in user["category_score"]:
+        print(i)
+    result=db.users.update_one(param,{"$set": test},upsert=False)
     print("Added the data to the Database")
 """print("G: ",addtodb(g,categories))
 print("A: ",addtodb(a,categories))
@@ -147,29 +150,17 @@ print("D: ",addtodb(d,categories))
 print("E: ",addtodb(e,categories))
 print("F: ",addtodb(f,categories))"""
 ##############################################################################
-app = Flask(__name__) #create the Flask app
 
-@app.route('/buyerscore',methods=['POST'])
-def query_example():
-    r= requests.form['email']
-    data=r.json()
-    user_id=data
-    list=fetch(str)
-    addtodb(list,categories,user_id)
-    return
-if __name__ == '__main__':
-    app.run(debug=True, port=5000) #run app in debug mode on port 5000
-user_id="5ad0edac8698a52bf05f7f2e"
-def fetch(str):
-    k=db.test.find_one({"email": user_id})
+def fetch(str, user_id):
+    k=db.users.find_one({"email": user_id})
     print(k)
-    tickets=k["N_Tickets"]
-    education=k["N_Education"]
-    Entertainment=k["N_Entertainment"]
-    Automobile=k["N_Automobile"]
-    Daily_Needs=k["N_Daily_Needs"]
-    Electronics=k["N_Electronics"]
-    Clothes=k["N_Clothes"]
+    tickets=k["category_count"]["tickets"]
+    education=k["category_count"]["education"]
+    Entertainment=k["category_count"]["entertainment"]
+    Automobile=k["category_count"]["automobile"]
+    Daily_Needs=k["category_count"]["daily_needs"]
+    Electronics=k["category_count"]["electronics"]
+    Clothes=k["category_count"]["clothes"]
     print(tickets,education,Entertainment,Automobile,Daily_Needs,Electronics,Clothes)
     fetched=[]
     for i in range(tickets):
@@ -188,5 +179,20 @@ def fetch(str):
         fetched.append('Clothes')
     print(fetched)
     return fetched
-list=fetch(str)
-print("Adding to the Database ",addtodb(list,categories,user_id))
+# list=fetch(str)
+# print("Adding to the Database ",addtodb(list,categories,user_id))
+
+
+app = Flask(__name__) #create the Flask app
+
+@app.route('/buyerscore',methods=['POST'])
+def query_example():
+    r = request.form['email']
+    user_id=r
+    print(user_id)
+    list = fetch(str,user_id)
+    addtodb(list,categories,user_id)
+    d = {'message': 'Hey'}
+    return jsonify(d)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000) #run app in debug mode on port 5000
