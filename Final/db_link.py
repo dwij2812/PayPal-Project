@@ -149,9 +149,9 @@ print("F: ",addtodb(f,categories))"""
 ##############################################################################
 app = Flask(__name__) #create the Flask app
 
-@app.route('/buyerscore')
+@app.route('/buyerscore',methods=['POST'])
 def query_example():
-    r= requests.get('http://127.0.0.1:8000')
+    r= requests.form['email']
     data=r.json()
     user_id=data
     list=fetch(str)
