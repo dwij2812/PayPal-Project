@@ -1,10 +1,18 @@
 from pymongo import *
 from random import randint
 from bson import ObjectId
+from flask import Flask, request,jsonify #import main Flask class and request object
 #Step 1: Connect to MongoDB - Note: Change connection string as needed
 client = MongoClient(port=27017)
 db=client.test
-
+import requests as requests
+import json as json
+def get(url):
+    try:
+        res = requests.get(url)
+        return res.json()
+    except:
+        return False
 categories=["Electronics","Daily Needs","Clothes","Tickets","Entertainment","Education","Automobile"]
 a=["Electronics","Tickets","Tickets"]
 b=["Clothes","Tickets","Tickets"]
@@ -139,9 +147,21 @@ print("D: ",addtodb(d,categories))
 print("E: ",addtodb(e,categories))
 print("F: ",addtodb(f,categories))"""
 ##############################################################################
+app = Flask(__name__) #create the Flask app
+
+@app.route('/buyerscore')
+def query_example():
+    r= requests.get('http://127.0.0.1:8000')
+    data=r.json()
+    user_id=data
+    list=fetch(str)
+    addtodb(list,categories,user_id)
+    return
+if __name__ == '__main__':
+    app.run(debug=True, port=5000) #run app in debug mode on port 5000
 user_id="5ad0edac8698a52bf05f7f2e"
 def fetch(str):
-    k=db.test.find_one({"_id": ObjectId(user_id)})
+    k=db.test.find_one({"email": user_id})
     print(k)
     tickets=k["N_Tickets"]
     education=k["N_Education"]
